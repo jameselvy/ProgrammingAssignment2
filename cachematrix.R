@@ -22,7 +22,7 @@
 
 
 
-#############################################################################################
+########################
 # function: makeCacheMatrix
 # This function creates a special "matrix" object that can cache its inverse.
 # It returns a list of four functions:
@@ -47,7 +47,7 @@ makeCacheMatrix <- function(x = matrix()) {  # function requires matrix input, a
 
 
 
-#############################################################################################
+########################
 # function: cacheSolve
 # This function computes the inverse of the special "matrix" returned by makeCacheMatrix.
 # If the inverse has already been calculated (and the matrix has not changed), 
@@ -68,7 +68,7 @@ cacheSolve <- function(x, ...) {
 
 
 
-#############################################################################################
+########################
 # test routines
 matrix_example <- rbind(c(1,4),c(2,3))       # make a test matrix
 matrix_example                               # print 'matrix_example' to console to check matrix
