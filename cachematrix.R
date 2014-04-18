@@ -30,7 +30,7 @@
 # 2. get - gets the value of the matrix
 # 3. setInverse - set the value of the inverse
 # 4. getInverse - retrieves the value of the inverse from the cache
-makeCacheMatrix <- function(x = matrix()) {  # function requires matrix input, assumes square matrix
+makeCacheMatrix <- function(x = matrix()) {  # function requires matrix input, assumes invertible 'square' matrix
   
   m <- NULL                                  # creates the cache as matrix 'm' and assigns NULL
 
