@@ -21,59 +21,88 @@
 # cacheSolve assumes the input matrix is always invertible.
 
 
-##  function: makeCacheMatrix
+
+#############################################################################################
+# function: makeCacheMatrix
 # This function creates a special "matrix" object that can cache its inverse.
 # It returns a list of four functions:
 # 1. set - sets the value of the matrix
-# 2. get - get the value of the matrix
+# 2. get - gets the value of the matrix
 # 3. setInverse - set the value of the inverse using 'solve' function to cache
 # 4. getInverse - retrieves the value of the inverse from the cache
-makeCacheMatrix <- function(x = matrix()) {     # function requires matrix input, assumes square matrix
+makeCacheMatrix <- function(x = matrix()) {  # function requires matrix input, assumes square matrix
   m <- NULL
-  set <- function(y) {
+  set <- function(y) {                       # sets the value of the matrix
     x <<- y             
     m <<- NULL          
   }                     
-  get <- function() x
-  setInverse <- function(solve) m <<- solve
-  getInverse <- function() m
-  list(set = set,
-       get = get,
-       setInverse = setInverse,
-       getInverse = getInverse)
+  get <- function() x                        # gets the value of the matrix
+  setInverse <- function(solve) m <<- solve  # set the value of the inverse of matrix to cache
+  getInverse <- function() m                 # retrieves the value of the inverse from the cache
+  list(set = set,                            # return a list of the 4 functions defined above                  
+       get = get,                        
+       setInverse = setInverse,          
+       getInverse = getInverse)          
 }
 
 
-##  function: cacheSolve
+
+#############################################################################################
+# function: cacheSolve
 # This function computes the inverse of the special "matrix" returned by makeCacheMatrix.
 # If the inverse has already been calculated (and the matrix has not changed), 
 # then the cachesolve should retrieve the inverse from the cache.
 cacheSolve <- function(x, ...) {
         ## Return a matrix that is the inverse of 'x'
-  m <- x$getInverse()               # if no cached inverse matrix exists, 
-                                    # copy existing inverse matrix to cache
-  
-  if(!is.null(m)) {                 # return inverse of cached matrix if it exists
+  m <- x$getInverse()                        # if cached inverse matrix exists, assign to 'm' 
+  if(!is.null(m)) {                          # end function and return m, as no need to recompute inverse
     message("getting cached data")
     return(m)
   }
-  
-  data <- x$get()
-  m <- solve(data, ...)
-  x$setInverse(m)
+                                             # no cache of inverse of matrix exists, so need to compute
+  data <- x$get()                            # get matrix and assign to 'data'
+  m <- solve(data, ...)                      # compute inverse of matrix 'data'
+  x$setInverse(m)                            # store inverse matrix in cache
   m
 }
 
 
-## test routines
-matrix_example <- rbind(c(1,4),c(2,3))
-matrix_example
 
-test <- makeCacheMatrix(matrix_example)
-cacheSolve(test)
-cacheSolve(test)
+#############################################################################################
+# test routines
+matrix_example <- rbind(c(1,4),c(2,3))       # make a test matrix
+matrix_example                               # print 'matrix_example' to console to check matrix
 
-solve(matrix_example)
-test$set(rbind(c(1,4),c(5,6)))
-cacheSolve(test)
-solve() <- rbind(c(1,4),c(2,3))
+test <- makeCacheMatrix(matrix_example)      # creates matrix using 'matrix_example' and returns
+                                             # and returns list of 4 functions for cacheSolve 
+                                             # function to use
+
+cacheSolve(test)                             # check if cached inverse matrix exists (FALSE)
+                                             # compute inverse of 'matrix_example'
+                                             # write inverse of matrix to cache using setInverse() function
+                                             # return inverse of 'matrix_example'
+
+cacheSolve(test)                             # check if cached inverse matrix exists (TRUE)
+                                             # retrieve cache of inverse of 'matrix_example'
+                                             # return inverse of 'matrix_example'
+
+solve(matrix_example)                        # check that cacheSolve is computing inverse correctly
+                                             # by comparing with output of 'solve(matrix_example)'
+
+test$set(rbind(c(1,4),c(5,6)))               # check that 'set' function is overiding cache
+cacheSolve(test)                             # check inverse for new matrix returned
+solve(rbind(c(1,4),c(5,6)))                  # check inverse of new matrix is computed correctly
+cacheSolve(test)                             # check uses cached of matrix inverse this time
+
+
+
+
+
+
+
+
+
+
+
+
+
