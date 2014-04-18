@@ -25,7 +25,7 @@
 # This function creates a special "matrix" object that can cache its inverse.
 # It returns a list of four functions:
 # 1. set - sets the value of the matrix
-# 2. get - get the value of the vector
+# 2. get - get the value of the matrix
 # 3. setInverse - set the value of the inverse using 'solve' function to cache
 # 4. getInverse - retrieves the value of the inverse from the cache
 makeCacheMatrix <- function(x = matrix()) {     # function requires matrix input, assumes square matrix
