@@ -25,22 +25,29 @@
 ########################
 # function: makeCacheMatrix
 # This function creates a special "matrix" object that can cache its inverse.
-# It returns a list of four functions:
+# It is a constructor function which creates and returns the following four functions:
 # 1. set - sets the value of the matrix
 # 2. get - gets the value of the matrix
 # 3. setInverse - set the value of the inverse using 'solve' function to cache
 # 4. getInverse - retrieves the value of the inverse from the cache
 makeCacheMatrix <- function(x = matrix()) {  # function requires matrix input, assumes square matrix
-  m <- NULL
-  set <- function(y) {                       # sets the value of the matrix
-    x <<- y             
-    m <<- NULL          
-  }                     
-  get <- function() x                        # gets the value of the matrix
-  setInverse <- function(solve) m <<- solve  # set the value of the inverse of matrix to cache
-  getInverse <- function() m                 # retrieves the value of the inverse from the cache
-  list(set = set,                            # return a list of the 4 functions defined above                  
-       get = get,                        
+  
+  m <- NULL                                  # creates the cache as matrix 'm' and assigns NULL
+
+  set <- function(y) {                       # assigns value of a matrix in argument 'y' to  
+    x <<- y                                  # free variable 'x' in the parent environment and         
+    m <<- NULL}                              # clears the cache stored in 'm' in parent environment                     
+
+  get <- function() x                        # gets the value of matrix 'x' from parent environment 
+  
+  setInverse <- function(solve) m <<- solve  # set the value of the inverse of matrix to 
+                                             # cache 'm' in parent environment
+  
+  getInverse <- function() m                 # retrieves the value of the inverse from the 
+                                             # cache 'm' in parent environment  
+  
+  list(set = set,                            # returns a list of the 4 'constructed' functions                   
+       get = get,
        setInverse = setInverse,          
        getInverse = getInverse)          
 }
@@ -54,16 +61,18 @@ makeCacheMatrix <- function(x = matrix()) {  # function requires matrix input, a
 # then the cachesolve should retrieve the inverse from the cache.
 cacheSolve <- function(x, ...) {
         ## Return a matrix that is the inverse of 'x'
-  m <- x$getInverse()                        # IF cached inverse matrix exists, assign to 'm' 
-  if(!is.null(m)) {                          # end function and return inverse 'm', as no need to recompute inverse
-    message("getting cached data")
+  m <- x$getInverse()                        # IF cached inverse matrix 'm' exists in parent environment,
+                                             # assign to local 'm' variable
+
+  if(!is.null(m)) {                          # end function and return inverse matrix local 'm',
+    message("getting cached data")           # as cache exists and no need to recompute inverse
     return(m)
   }
-                                             # ELSE no cache of inverse of matrix exists, so need to compute
-  data <- x$get()                            # get matrix and assign to 'data'
-  m <- solve(data, ...)                      # compute inverse of matrix 'data'
-  x$setInverse(m)                            # store inverse matrix in cache
-  m                                          # return inverse of matrix and exit function
+                                             # no cache 'm' of inverse matrix exists, so need to compute
+  data <- x$get()                            # get matrix 'x' from parent environment and assign to local 
+  m <- solve(data, ...)                      # 'data' and compute inverse of matrix and assign to local 'm'
+  x$setInverse(m)                            # store inverse matrix 'm' in cache in parent environment
+  m                                          # return local inverse of matrix 'm' and exit function
 }
 
 
@@ -93,16 +102,3 @@ test$set(rbind(c(1,4),c(5,6)))               # check that 'set' function is over
 cacheSolve(test)                             # check inverse for new matrix returned
 solve(rbind(c(1,4),c(5,6)))                  # check inverse of new matrix is computed correctly
 cacheSolve(test)                             # check uses cached of matrix inverse this time
-
-
-
-
-
-
-
-
-
-
-
-
-
