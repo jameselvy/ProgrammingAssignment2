@@ -28,7 +28,7 @@
 # It is a constructor function which creates and returns the following four functions:
 # 1. set - sets the value of the matrix
 # 2. get - gets the value of the matrix
-# 3. setInverse - set the value of the inverse using 'solve' function to cache
+# 3. setInverse - set the value of the inverse
 # 4. getInverse - retrieves the value of the inverse from the cache
 makeCacheMatrix <- function(x = matrix()) {  # function requires matrix input, assumes square matrix
   
@@ -40,8 +40,8 @@ makeCacheMatrix <- function(x = matrix()) {  # function requires matrix input, a
 
   get <- function() x                        # gets the value of matrix 'x' from parent environment 
   
-  setInverse <- function(solve) m <<- solve  # set the value of the inverse of matrix to 
-                                             # cache 'm' in parent environment
+  setInverse <- function(solve) m <<- solve  # assign the local value of the inverse matrix 'solve' 
+                                             # (local 'm') to cache 'm' in parent environment
   
   getInverse <- function() m                 # retrieves the value of the inverse from the 
                                              # cache 'm' in parent environment  
@@ -102,3 +102,24 @@ test$set(rbind(c(1,4),c(5,6)))               # check that 'set' function is over
 cacheSolve(test)                             # check inverse for new matrix returned
 solve(rbind(c(1,4),c(5,6)))                  # check inverse of new matrix is computed correctly
 cacheSolve(test)                             # check uses cached of matrix inverse this time
+
+
+
+########################
+# check environments functions live in
+ls(environment(makeCacheMatrix))
+
+ls(environment(test$get))
+get("get", environment(test$get))
+
+ls(environment(test$set))
+get("set", environment(test$set))
+
+ls(environment(test$getInverse))
+get("getInverse", environment(test$getInverse))
+
+ls(environment(test$setInverse))
+get("setInverse", environment(test$setInverse))
+
+
+
