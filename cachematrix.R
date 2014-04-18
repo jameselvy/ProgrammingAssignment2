@@ -1,11 +1,11 @@
-############################################################################################
+#############################################################################################
 # cachematrix.R
 # submitted for R programming course on coursera 'rprog-002' by James Elvy on 18 April 2014
 # course website: https://class.coursera.org/rprog-002
 # file 'cachematrix.R' can be downloaded from: https://github.com/jameselvy/ProgrammingAssignment2
 # file template created by Roger Peng. 
 # Forked and cloned from https://github.com/rdpeng/ProgrammingAssignment2
-############################################################################################
+#############################################################################################
 #
 # Matrix inversion is usually a costly computation and their may be some benefit to caching the 
 # inverse of a matrix rather than compute it repeatedly (there are also alternatives to matrix 
